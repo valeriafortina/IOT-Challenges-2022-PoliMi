@@ -1,5 +1,5 @@
 # IOT-Challenges-2022-PoliMi
-These challanges have been developed as part of the "Internt of Things" course at Politecnico di Milano.
+These challanges have been developed as part of the "Internet of Things" course at Politecnico di Milano.
 - Final Evaluation: 4/4.
 
 ## Challenges
