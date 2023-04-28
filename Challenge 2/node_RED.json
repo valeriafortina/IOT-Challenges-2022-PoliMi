@@ -1,0 +1,226 @@
+[
+    {
+        "id": "b5d1af96.0416f8",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "15364d3b.b06aa3",
+        "type": "mqtt out",
+        "z": "b5d1af96.0416f8",
+        "name": "",
+        "topic": "",
+        "qos": "",
+        "retain": "",
+        "broker": "927aefa9.be28",
+        "x": 1350,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "6119e658.3a94",
+        "type": "function",
+        "z": "b5d1af96.0416f8",
+        "name": "filter values",
+        "func": "var values= msg.payload.split(',');\nvar code=values[0];\nparseInt(code);\n\nif(code>=7962 && code<=8061){\n    \n    msg.payload=\"field1=\"+values[1]+\"&field2=\"+values[2]+\"&field5=\"+values[5]+\"&status=MQTTPUBLISH\"\n    msg.topic=\"channels/1710684/publish\"\n    return msg;\n}\n\nreturn null\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 690,
+        "y": 240,
+        "wires": [
+            [
+                "496f6db0.577be4"
+            ]
+        ]
+    },
+    {
+        "id": "e636436.b57d44",
+        "type": "inject",
+        "z": "b5d1af96.0416f8",
+        "name": "",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 140,
+        "y": 240,
+        "wires": [
+            [
+                "fcf93c8b.cee3a8"
+            ]
+        ]
+    },
+    {
+        "id": "8271572e.8316f8",
+        "type": "debug",
+        "z": "b5d1af96.0416f8",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "x": 1170,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "496f6db0.577be4",
+        "type": "delay",
+        "z": "b5d1af96.0416f8",
+        "name": "Message Limiter",
+        "pauseType": "rate",
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "rate": "2",
+        "nbRateUnits": "1",
+        "rateUnits": "minute",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "x": 930,
+        "y": 240,
+        "wires": [
+            [
+                "8271572e.8316f8",
+                "7227fe78.d7d0f",
+                "15364d3b.b06aa3"
+            ]
+        ]
+    },
+    {
+        "id": "aaccbaa9.53a848",
+        "type": "ui_chart",
+        "z": "b5d1af96.0416f8",
+        "name": "RSSI",
+        "group": "46295b2e.e2564c",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "label": "Chart",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": true,
+        "ymin": "-80",
+        "ymax": "-25",
+        "removeOlder": "10",
+        "removeOlderPoints": "100",
+        "removeOlderUnit": "60",
+        "cutout": 0,
+        "useOneColor": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "useOldStyle": false,
+        "x": 1210,
+        "y": 480,
+        "wires": [
+            [],
+            []
+        ]
+    },
+    {
+        "id": "fcf93c8b.cee3a8",
+        "type": "file in",
+        "z": "b5d1af96.0416f8",
+        "name": "",
+        "filename": "/home/user/Desktop/iot-feeds.csv",
+        "format": "lines",
+        "chunk": false,
+        "sendError": false,
+        "x": 380,
+        "y": 240,
+        "wires": [
+            [
+                "6119e658.3a94"
+            ]
+        ]
+    },
+    {
+        "id": "7227fe78.d7d0f",
+        "type": "function",
+        "z": "b5d1af96.0416f8",
+        "name": "filter RSSI",
+        "func": "if (msg.payload.length>0){\n    msg.payload=msg.payload.substring(msg.payload.search(\"-\"), msg.payload.search(\"-\")+3);\n    return msg;\n}\n\n\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 980,
+        "y": 480,
+        "wires": [
+            [
+                "aaccbaa9.53a848",
+                "c773c384.877ca"
+            ]
+        ]
+    },
+    {
+        "id": "c773c384.877ca",
+        "type": "debug",
+        "z": "b5d1af96.0416f8",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "x": 1250,
+        "y": 580,
+        "wires": []
+    },
+    {
+        "id": "927aefa9.be28",
+        "type": "mqtt-broker",
+        "z": "",
+        "name": "Iot challenge",
+        "broker": "mqtt3.thingspeak.com",
+        "port": "1883",
+        "clientid": "GRYhAxIHDho0OREOLhc5Iww",
+        "usetls": false,
+        "compatmode": true,
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": ""
+    },
+    {
+        "id": "46295b2e.e2564c",
+        "type": "ui_group",
+        "z": "",
+        "name": "RSSI",
+        "tab": "6d60c24d.b7e52c",
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "6d60c24d.b7e52c",
+        "type": "ui_tab",
+        "z": "",
+        "name": "RSSI",
+        "icon": "dashboard"
+    }
+]
