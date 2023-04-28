@@ -1,0 +1,96 @@
+[
+    {
+        "id": "aab68dc6.b0b438",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "d3b6da74.268e5",
+        "type": "tcp in",
+        "z": "aab68dc6.b0b438",
+        "name": "",
+        "server": "client",
+        "host": "localhost",
+        "port": "60001",
+        "datamode": "stream",
+        "datatype": "utf8",
+        "newline": "\\n",
+        "topic": "",
+        "base64": false,
+        "x": 150,
+        "y": 220,
+        "wires": [
+            [
+                "876974e1.9122a8"
+            ]
+        ]
+    },
+    {
+        "id": "1635f25c.4972c6",
+        "type": "debug",
+        "z": "aab68dc6.b0b438",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 450,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "2a3f9324.23da64",
+        "type": "mqtt out",
+        "z": "aab68dc6.b0b438",
+        "name": "",
+        "topic": "",
+        "qos": "",
+        "retain": "",
+        "broker": "927aefa9.be28",
+        "x": 680,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "876974e1.9122a8",
+        "type": "function",
+        "z": "aab68dc6.b0b438",
+        "name": "toggle leds",
+        "func": "var values= msg.payload.split(',');\nvar code=values[1];\nvar status=values[3];\nparseInt(code);\n\nif(code==0){\n    msg.payload=\"field1=\"+values[3]+\"&status=MQTTPUBLISH\"\n}\n \nif(code==1){\n    msg.payload=\"field2=\"+values[3]+\"&status=MQTTPUBLISH\"\n}   \n\nif(code==2){\n    msg.payload=\"field3=\"+values[3]+\"&status=MQTTPUBLISH\"\n}\n    \nmsg.topic=\"channels/1724975/publish\"\nreturn msg;\n\n\n\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 370,
+        "y": 300,
+        "wires": [
+            [
+                "1635f25c.4972c6",
+                "2a3f9324.23da64"
+            ]
+        ]
+    },
+    {
+        "id": "927aefa9.be28",
+        "type": "mqtt-broker",
+        "z": "",
+        "name": "Iot challenge 3",
+        "broker": "mqtt3.thingspeak.com",
+        "port": "1883",
+        "clientid": "EhU3EwYlDgIbDy4CFRAsGxg",
+        "usetls": false,
+        "compatmode": true,
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": ""
+    }
+]
